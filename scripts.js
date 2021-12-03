@@ -1,98 +1,89 @@
 let display = ''
 let displayHistory = ''
-let previousNumber = ''
+let leftNumber = ''
 let operator = ''
-let currentNumber = ''
+let rightNumber = ''
 let answer = 0;
 let displayText = document.querySelector('.display-text')
 let displayHistoryText = document.querySelector('.display-history')
+let equationArr = [ , , ,]
 
 buttons = document.querySelectorAll('button')
 
 buttons.forEach(btn => {
     btn.addEventListener("click", () => {
-        if (!statementExists() && btn.innerText == '=') {
-            return;
-        }
-        else if (isDecimal(previousNumber) && btn.innerText == '.') {
-            return;
-        }
-        else {
-            input(btn.innerText)
-            if (btn.innerText == '=') {
-                displayText.innerText = answer
+        if (operator != '' && isOperator(btn.innerText)) {
+            splitDisplay(display)
+            if (rightNumber == '') {
+                operator = btn.innerText
+                display = display.slice(0, display.length - 1) + btn.innerText
+                updateDisplayText(display)
             }
-            else if (btn.innerText == 'Reset') {
-                displayText.innerText = '0'
+            else {
+                saveHistory()
+                updateHistoryText()
+                display = String(compute())
+                operator = ''
+                updateDisplayText(display) 
+            }
+            
+        }
+        if (btn.innerText != '=' && btn.innerText != 'Delete') {
+            if (rightNumber == '' && isOperator(btn.innerText) && operator != '') {    
             }
             else {
                 display += btn.innerText
-                displayText.innerText = display
+                updateDisplayText(display)
             }
-            displayHistoryText.innerText = displayHistory            
+            }
+        if (btn.innerText == 'Reset') {
+            clear()
+            updateHistoryText()
+            updateDisplayText('0')
         }
-        
+        if (btn.innerText == 'Delete') {
+            if (display.length <= 1) {
+                display = ''
+                updateDisplayText('0');
+                return
+            }
+            else {
+                if (isOperator(display.slice(display.length - 1, display.length))) {
+                    operator = ''
+                }
+                display = display.slice(0, display.length - 1)
+                updateDisplayText(display)
+            }
+        }
+
+        splitDisplay(display)
+
         //display += btn.target.
     });
 });
 
-function input(key) {
-    switch (true) {
-        case key >= 0 && key <= 9 || key == '.':
-            if (operator == '') {
-                previousNumber += key
-                console.log(previousNumber)
-            }
-            else {
-                currentNumber += key
-                console.log(currentNumber)
-            }
-            console.log('number pressed')
+function saveHistory() {
+    displayHistory = display
+}
 
-            break;
-        case key == '+':
-        case key == '-':
-        case key == '/':
-        case key == '*':  
-            if (operator == '' || operator == '=') {
-                operator = key
-            }
-            else {
-                answer = compute()
-                previousNumber = answer
-                currentNumber = ''
-                operator = key
-                displayHistory = display
-                display = answer
-                splitDisplay()
-            }
-            break;
-        case key == '=':
-            answer = compute()    
-            displayHistory = display
-            display = answer
-            previousNumber = answer
-            currentNumber = ''
-            operator = '='
-            break;
-        case key == 'Reset':
-            console.log('clear pressed')
-            clear()
-            break;
-        case key =='Delete':
-    }
+function updateHistoryText() {
+    displayHistoryText.innerText = displayHistory
+}
+
+function updateDisplayText(str) {
+    displayText.innerText = str    
 }
 
 function compute() {
     switch (operator) {
         case '+':
-            return add(previousNumber, currentNumber)
+            return add(leftNumber, rightNumber)
         case '-':
-            return subtract(previousNumber, currentNumber)
+            return subtract(leftNumber, rightNumber)
         case '/':
-            return divide(previousNumber, currentNumber)
+            return divide(leftNumber, rightNumber)
         case '*':
-            return multiply(previousNumber, currentNumber)
+            return multiply(leftNumber, rightNumber)
     }
 }
 
@@ -118,12 +109,13 @@ const divide = function(num1, num2) {
 function statementExists() {
     return currentNumber == '' ? false : previousNumber == '' ? false : operator == '' ? false : true;
 }
+
 function clear() {
     display = ''
     displayHistory = ''
-    previousNumber = ''
+    leftNumber = ''
     operator = ''
-    currentNumber = ''
+    rightNumber = ''
     answer = 0;
 }
 
@@ -131,3 +123,39 @@ function isDecimal(number) {
     return (number % 1)
 }
 
+function isOperator(key) {
+    switch (key) {
+        case '*':
+        case '/':
+        case '+':
+        case '-':
+        case '=':
+            return true;
+    }
+    return false;
+}
+
+function splitDisplay(equation) {
+    leftNumber = ''
+    rightNumber = ''
+    switch (true) {
+        case equation.includes('*'):
+            equationArr = equation.split('*')
+            operator = '*'
+            break;
+        case equation.includes('/'):
+            equationArr = equation.split('/')
+            operator = '/'
+            break;
+        case equation.includes('+'):
+            equationArr = equation.split('+')
+            operator = '+'
+            break;            
+        case equation.includes('-'):
+            equationArr = equation.split('-')
+            operator = '-'
+            break;
+    }
+    leftNumber = equationArr[0]
+    rightNumber = equationArr[1]
+}

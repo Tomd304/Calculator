@@ -9,43 +9,69 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
+    background-color:slategrey;
 }
 .calculator {
     display: flex;
     flex-direction: column;
-    gap: 30px;
-    padding: 30px;
-    background-color: lightblue;
+    gap: 20px;
+    padding: 50px 25px;
+    background-color: black;
+    border-radius: 30px;
+    border: rgb(55, 55, 55) 10px solid;
 }
 
 .display {
-    background-color: lightcyan;
-    height: 80px;
+    height: 130px;
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
+    justify-content: space-around;
     align-items: flex-end;
-    padding: 10px;
+    padding: 5px 15px;
+    color: whitesmoke;
+    background-color: rgba(35,35,35,0.4);
+    border-radius: 20px;
 }
 
 .display-history {
-    font-size: 12px;
+    font-size: 22px;
+    margin-right: 10px;
 }
 
 .display-text {
-    font-size: 30px;
+    font-size: 45px;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    flex-shrink: 1;
 }
-
-
 
 .row {
     display: flex;
+    gap: 16px;
+    justify-content: space-between;
 }
 
+.controls {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
 button {
     align-items: stretch;
     height: 80px;
     width: 80px;
     border-radius: 0;
     font-size: 25px;
+    border-radius: 40px;
+    box-shadow: 2px 2px 8px 2px rgba(85,85,85,0.4);
+    background-color: rgb(15, 15, 15);
+    color: whitesmoke;
+    border: solid 1px black;
+}
+
+.dbl-btn {
+    width: 168px;
+}
+
+.operator-btn {
+    background-color: rgb(55, 55, 55);
 }

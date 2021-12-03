@@ -40,6 +40,18 @@ function logKey(e) {
 }
 
 function input(key) {
+    if (displayText.innerText == '0' && (isOperator(key) || key =='0')) {
+        return
+    }
+    if (key == '.') {
+        if (leftNumber.includes(key) && rightNumber == '') {
+            return
+        }
+        else if (rightNumber && rightNumber.includes == key) {
+            return
+        }
+    }
+    
     if (operator != '' && isOperator(key)) {
         splitDisplay(display)
         if (rightNumber == '') {
@@ -63,7 +75,7 @@ function input(key) {
             display += key
             updateDisplayText(display)
         }
-        }
+    }
     if (key == 'Reset') {
         clear()
         updateHistoryText()
@@ -180,6 +192,9 @@ function splitDisplay(equation) {
             equationArr = equation.split('-')
             operator = '-'
             break;
+        default:
+            leftNumber = display
+            return;
     }
     leftNumber = equationArr[0]
     rightNumber = equationArr[1]

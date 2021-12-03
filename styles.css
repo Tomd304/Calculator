@@ -53,7 +53,7 @@ body {
 .controls {
     display: flex;
     flex-direction: column;
-    gap: 11px;
+    gap: 16px;
 }
 button {
     align-items: stretch;

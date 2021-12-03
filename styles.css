@@ -46,19 +46,19 @@ body {
 
 .row {
     display: flex;
-    gap: 16px;
+    gap: 11px;
     justify-content: space-between;
 }
 
 .controls {
     display: flex;
     flex-direction: column;
-    gap: 16px;
+    gap: 11px;
 }
 button {
     align-items: stretch;
-    height: 80px;
-    width: 80px;
+    height: 70px;
+    width: 70px;
     border-radius: 0;
     font-size: 25px;
     border-radius: 40px;

@@ -1,0 +1,38 @@
+body {
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.calculator {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+    padding: 30px;
+    background-color: lightblue;
+}
+
+.display {
+    background-color: lightcyan;
+    height: 80px;
+    display: flex;
+    justify-content: flex-end;
+    padding: 10px;
+    align-items: center;
+}
+
+.display-text {
+    font-size: 30px;
+}
+
+.row {
+    display: flex;
+}
+
+button {
+    align-items: stretch;
+    height: 80px;
+    width: 80px;
+    border-radius: 0;
+    font-size: 25px;
+}

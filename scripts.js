@@ -12,55 +12,80 @@ buttons = document.querySelectorAll('button')
 
 buttons.forEach(btn => {
     btn.addEventListener("click", () => {
-        if (operator != '' && isOperator(btn.innerText)) {
-            splitDisplay(display)
-            if (rightNumber == '') {
-                operator = btn.innerText
-                display = display.slice(0, display.length - 1) + btn.innerText
-                updateDisplayText(display)
-            }
-            else {
-                saveHistory()
-                updateHistoryText()
-                display = String(compute())
-                operator = ''
-                updateDisplayText(display) 
-            }
-            
-        }
-        if (btn.innerText != '=' && btn.innerText != 'Delete') {
-            if (rightNumber == '' && isOperator(btn.innerText) && operator != '') {    
-            }
-            else {
-                display += btn.innerText
-                updateDisplayText(display)
-            }
-            }
-        if (btn.innerText == 'Reset') {
-            clear()
-            updateHistoryText()
-            updateDisplayText('0')
-        }
-        if (btn.innerText == 'Delete') {
-            if (display.length <= 1) {
-                display = ''
-                updateDisplayText('0');
-                return
-            }
-            else {
-                if (isOperator(display.slice(display.length - 1, display.length))) {
-                    operator = ''
-                }
-                display = display.slice(0, display.length - 1)
-                updateDisplayText(display)
-            }
-        }
-
-        splitDisplay(display)
-
+        input(btn.innerText)
         //display += btn.target.
     });
 });
+
+document.addEventListener('keydown', logKey);
+
+function logKey(e) {
+    switch (true) {
+        case e.keyCode >= 97 && e.keyCode <= 105:
+        case e.keyCode == 106 || e.keyCode == 107:
+        case e.keyCode >= 109 && e.keyCode <= 111:
+        case e.keyCode == 61:
+            input(e.key)
+            break;
+        case e.keyCode == 27:
+            input('Reset')
+            break;
+        case e.keyCode == 8:
+            input('Delete')
+            break;
+        case e.keyCode == 13:
+            input('=')
+            break;
+    }
+}
+
+function input(key) {
+    if (operator != '' && isOperator(key)) {
+        splitDisplay(display)
+        if (rightNumber == '') {
+            operator = key
+            display = display.slice(0, display.length - 1) + key
+            updateDisplayText(display)
+        }
+        else {
+            saveHistory()
+            updateHistoryText()
+            display = String(compute())
+            operator = ''
+            updateDisplayText(display) 
+        }
+        
+    }
+    if (key != '=' && key != 'Delete') {
+        if (rightNumber == '' && isOperator(key) && operator != '') {    
+        }
+        else {
+            display += key
+            updateDisplayText(display)
+        }
+        }
+    if (key == 'Reset') {
+        clear()
+        updateHistoryText()
+        updateDisplayText('0')
+    }
+    if (key == 'Delete') {
+        if (display.length <= 1) {
+            display = ''
+            updateDisplayText('0');
+            return
+        }
+        else {
+            if (isOperator(display.slice(display.length - 1, display.length))) {
+                operator = ''
+            }
+            display = display.slice(0, display.length - 1)
+            updateDisplayText(display)
+        }
+    }
+
+    splitDisplay(display)
+}
 
 function saveHistory() {
     displayHistory = display

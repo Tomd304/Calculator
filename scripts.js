@@ -21,7 +21,7 @@ document.addEventListener('keydown', logKey);
 
 function logKey(e) {
     switch (true) {
-        case e.keyCode >= 97 && e.keyCode <= 105:
+        case e.keyCode >= 96 && e.keyCode <= 105:
         case e.keyCode == 106 || e.keyCode == 107:
         case e.keyCode >= 109 && e.keyCode <= 111:
         case e.keyCode == 61:

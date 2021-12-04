@@ -36,12 +36,17 @@ body {
 .display-history {
     font-size: 22px;
     margin-right: 10px;
+    width: 343px;
+    text-align: right;
+    overflow: hidden;
 }
 
 .display-text {
     font-size: 45px;
     font-family: Verdana, Geneva, Tahoma, sans-serif;
-    flex-shrink: 1;
+    overflow: hidden;
+    width: 343px;
+    text-align: right;
 }
 
 .row {

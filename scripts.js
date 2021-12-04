@@ -12,47 +12,78 @@ buttons = document.querySelectorAll('button')
 
 buttons.forEach(btn => {
     btn.addEventListener("click", () => {
-        input(btn.innerText)
-        //display += btn.target.
+        buttonClicked(btn.innerText)
     });
 });
 
 document.addEventListener('keydown', logKey);
 
 function logKey(e) {
+    keyPressed(e)
+}
+
+function keyPressed(e) {
     switch (true) {
-        case e.keyCode >= 96 && e.keyCode <= 105:
+        case e.keyCode >= 96 && e.keyCode <= 105 || e.keyCode == '110':
+            numberInput(e.key)
+            break;
         case e.keyCode == 106 || e.keyCode == 107:
         case e.keyCode >= 109 && e.keyCode <= 111:
         case e.keyCode == 61:
-            input(e.key)
-            break;
-        case e.keyCode == 27:
-            input('Reset')
-            break;
-        case e.keyCode == 8:
-            input('Delete')
+            operatorInput(e.key)
             break;
         case e.keyCode == 13:
-            input('=')
+            operatorInput('=')
+            break;
+        case e.keyCode == 27:
+            resetInput()
+            break;
+        case e.keyCode == 8:
+            deleteInput()
             break;
     }
+    splitDisplay(display);
 }
 
-function input(key) {
-    if (displayText.innerText == '0' && (isOperator(key) || key =='0')) {
+function buttonClicked(btn) {
+    switch (true) {
+        case btn >= 0 && btn <= 9 || btn == '.':
+            numberInput(btn)
+            break;
+        case btn == '+' || btn == '-' || btn == '*' || btn == '/' || btn == '=':
+            operatorInput(btn)
+            break;
+        case btn == 'Reset':
+            resetInput()
+            break;
+        case btn == 'Delete':
+            deleteInput()
+            break;
+    }
+    splitDisplay(display);
+}
+
+function numberInput(key) {
+    if (displayText.innerText == '0' && key =='0') {
         return
     }
     if (key == '.') {
         if (leftNumber.includes(key) && rightNumber == '') {
             return
         }
-        else if (rightNumber && rightNumber.includes == key) {
+        else if (operator != '' && rightNumber.includes(key)) {
             return
         }
     }
-    
-    if (operator != '' && isOperator(key)) {
+    display += key
+    updateDisplayText(display)
+}
+
+function operatorInput(key) {
+    if (displayText.innerText == '0') {
+        return
+    }
+    if (operator != '') {
         splitDisplay(display)
         if (rightNumber == '') {
             operator = key
@@ -68,35 +99,36 @@ function input(key) {
         }
         
     }
-    if (key != '=' && key != 'Delete') {
-        if (rightNumber == '' && isOperator(key) && operator != '') {    
+    if (key != '=') {
+        if (rightNumber == '' && operator != '') {    
         }
         else {
             display += key
             updateDisplayText(display)
         }
     }
-    if (key == 'Reset') {
-        clear()
-        updateHistoryText()
-        updateDisplayText('0')
-    }
-    if (key == 'Delete') {
-        if (display.length <= 1) {
-            display = ''
-            updateDisplayText('0');
-            return
-        }
-        else {
-            if (isOperator(display.slice(display.length - 1, display.length))) {
-                operator = ''
-            }
-            display = display.slice(0, display.length - 1)
-            updateDisplayText(display)
-        }
-    }
+    
+}
 
-    splitDisplay(display)
+function resetInput() {
+    clear()
+    updateHistoryText()
+    updateDisplayText('0')
+}
+
+function deleteInput() {
+    if (display.length <= 1) {
+        display = ''
+        updateDisplayText('0');
+        return
+    }
+    else {
+        if (isOperator(display.slice(display.length - 1, display.length))) {
+            operator = ''
+        }
+        display = display.slice(0, display.length - 1)
+        updateDisplayText(display)
+    }
 }
 
 function saveHistory() {
@@ -143,10 +175,6 @@ const divide = function(num1, num2) {
     return Math.round(parseFloat(num1) / parseFloat(num2) * 100000) / 100000
 };
 
-function statementExists() {
-    return currentNumber == '' ? false : previousNumber == '' ? false : operator == '' ? false : true;
-}
-
 function clear() {
     display = ''
     displayHistory = ''
@@ -154,10 +182,6 @@ function clear() {
     operator = ''
     rightNumber = ''
     answer = 0;
-}
-
-function isDecimal(number) {
-    return (number % 1)
 }
 
 function isOperator(key) {
